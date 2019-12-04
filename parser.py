@@ -92,7 +92,6 @@ data_dir = sys.argv[1]
 for file in listdir(data_dir):
     # Only do this for Excel files (skips OS meta files like .DS_Store)
     if (not EXCEL_FILE_REGEX.match(file)) or EXCEL_TEMP_FILE_REGEX.match(file):
-        print("Skipping " + file)
         continue
 
     workbook = open_workbook("{}/{}".format(data_dir, file))
