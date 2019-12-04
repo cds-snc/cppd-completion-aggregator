@@ -114,7 +114,7 @@ for file in listdir(data_dir):
                 data[sheet.name].add_data(field_name, status, comment)
 
 # Make CSV
-print("SECTION,FIELD,FIELD COUNT,COMPLETE,BLANK,NOT APPLICABLE,PARTIALLY_COMPLETE,NOT CODED,COMMENTS")
+print("SECTION,FIELD,FIELD COUNT,COMPLETE,BLANK,NOT APPLICABLE,PARTIALLY COMPLETE,NOT CODED,COMMENTS")
 for sheet_name in data:
     for field_name in data[sheet_name].get_fields():
         comment_str = ""
