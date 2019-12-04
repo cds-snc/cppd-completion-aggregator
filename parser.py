@@ -1,8 +1,11 @@
 from xlrd import open_workbook
 from os import listdir
 import sys
+import re
 
 STATUSES = ("Complete", "Blank", "Not Applicable", "Partially Complete", "Not Coded")
+EXCEL_FILE_REGEX = re.compile(r".+\.xlsx?$", re.IGNORECASE)
+EXCEL_TEMP_FILE_REGEX = re.compile(r"^~.+", re.IGNORECASE)
 
 class SheetData():
     '''
@@ -87,6 +90,11 @@ data_dir = sys.argv[1]
 
 # Collect data from all files in the spreadsheets dir
 for file in listdir(data_dir):
+    # Only do this for Excel files (skips OS meta files like .DS_Store)
+    if (not EXCEL_FILE_REGEX.match(file)) or EXCEL_TEMP_FILE_REGEX.match(file):
+        print("Skipping " + file)
+        continue
+
     workbook = open_workbook("{}/{}".format(data_dir, file))
     for sheet in workbook.sheets():
         # Setup the sheet if not seen before
@@ -95,14 +103,16 @@ for file in listdir(data_dir):
 
         # Loop through rows, starting at row 2 (i.e. ignoring header row)
         for row in range(1, sheet.nrows):
-            field_name = "[{}] {}".format(row+1, sheet.cell(row, COLUMNS["FIELD"]).value.replace(",",""))
-            status = sheet.cell(row, COLUMNS["STATUS"]).value
-            try:
-                comment = sheet.cell(row, COLUMNS["COMMENT"]).value.replace(",","")
-            except:
-                comment = None
-            
-            data[sheet.name].add_data(field_name, status, comment)
+            field_name_val = sheet.cell(row, COLUMNS["FIELD"]).value.replace(",","")
+            if field_name_val:
+                field_name = "[{}] {}".format(row+1, field_name_val)
+                status = sheet.cell(row, COLUMNS["STATUS"]).value
+                try:
+                    comment = sheet.cell(row, COLUMNS["COMMENT"]).value.replace(",","")
+                except:
+                    comment = None
+                
+                data[sheet.name].add_data(field_name, status, comment)
 
 # Make CSV
 print("SECTION,FIELD,FIELD COUNT,COMPLETE,BLANK,NOT APPLICABLE,PARTIALLY_COMPLETE,NOT CODED,COMMENTS")
