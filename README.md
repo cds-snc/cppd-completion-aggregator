@@ -12,6 +12,7 @@ First time only:
 1. Clone this repo and navigate in
 1. Setup virtual environment: `python3 -m venv .venv`
 1. Activate virtual env: `source .venv/bin/activate`
+1. Install dependencies: `pip install -r requirements.txt`
 
 All other times:
 
