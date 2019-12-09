@@ -133,10 +133,10 @@ for sheet_name in data:
             sheet_name,
             field_name,
             field_count,
-            complete_count / field_count * 100,
-            blank_count / field_count * 100,
-            na_count / field_count * 100,
-            partial_count / field_count * 100,
-            na_count / field_count * 100,
+            complete_count / field_count * 100.0,
+            blank_count / field_count * 100.0,
+            na_count / field_count * 100.0,
+            partial_count / field_count * 100.0,
+            not_coded_count / field_count * 100.0,
             comment_str
         ))
